@@ -15,6 +15,10 @@ type item struct {
 	CompletedAt time.Time
 }
 
+type Stringer interface {
+	String() string
+}
+
 type List []item
 
 func (l *List) Add(task string) {
@@ -30,7 +34,7 @@ func (l *List) Add(task string) {
 func (l *List) Complete(i int) error {
 	ls := *l
 	if i <= 0 || i > len(ls) {
-		return fmt.Errorf("Item %d does not exist", i)
+		return fmt.Errorf("item %d does not exist", i)
 	}
 	// Adjusting index for 0 based index
 	ls[i-1].Done = true
@@ -41,7 +45,7 @@ func (l *List) Complete(i int) error {
 func (l *List) Delete(i int) error {
 	ls := *l
 	if i <= 0 || i > len(ls) {
-		return fmt.Errorf("Item %d does not exist", i)
+		return fmt.Errorf("item %d does not exist", i)
 	}
 	*l = append(ls[:i-1], ls[i:]...)
 	return nil
@@ -71,4 +75,43 @@ func (l *List) Get(filename string) error {
 		return nil
 	}
 	return json.Unmarshal(file, l)
+}
+
+func (l *List) String() string {
+	formatted := ""
+	for k, t := range *l {
+		prefix := "[ ]"
+		if t.Done {
+			prefix = "[X] "
+		}
+		// Adjust the item number k to print numbers starting from 1 instead of 0
+		formatted += fmt.Sprintf("%d.%s: %s\n", k+1, prefix , t.Task)
+	}
+	return formatted
+}
+
+func (l *List) StringTime() string {
+	formatted := ""
+	for k, t := range *l {
+		prefix := "[ ]"
+		if t.Done {
+			prefix = "[X] "
+		}
+		// Adjust the item number k to print numbers starting from 1 instead of 0
+		formatted += fmt.Sprintf("%s, %d.%s: %s\n", t.CreatedAt.Format("02-01-2006 15:04:05"), k+1, prefix , t.Task)
+	}
+	return formatted
+}
+
+func (l *List) Pending() string {
+	formatted := ""
+	for k, t := range *l {
+		prefix := "[ ]"
+		if t.Done {
+			continue
+		}
+		// Adjust the item number k to print numbers starting from 1 instead of 0
+		formatted += fmt.Sprintf("%s, %d.%s: %s\n", t.CreatedAt.Format("02-01-2006 15:04:05"), k+1, prefix , t.Task)
+	}
+	return formatted
 }
