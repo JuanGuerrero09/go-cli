@@ -15,22 +15,27 @@ func main() {
 
 	flag.Parse()
 
-	fmt.Printf("Total words: %d", count(os.Stdin, *lines, *bytes))
+  counter, int := count(os.Stdin, *lines, *bytes)
+
+	fmt.Printf("Total %s: %d", counter, int)
 
 }
 
-func count(r io.Reader, countLines bool, countBytes bool) int {
+func count(r io.Reader, countLines bool, countBytes bool) (string, int) {
 
 	scanner := bufio.NewScanner(r)
+  counter := "words"
 
 	scanner.Split(bufio.ScanWords)
 
 	if countBytes {
 		scanner.Split(bufio.ScanBytes)
+    counter = "bytes"
 	}
 
 	if countLines {
 		scanner.Split(bufio.ScanLines)
+    counter = "lines"
 	}
 
 	wc := 0
@@ -39,5 +44,5 @@ func count(r io.Reader, countLines bool, countBytes bool) int {
 		wc++
 	}
 
-	return wc
+	return counter, wc
 }
