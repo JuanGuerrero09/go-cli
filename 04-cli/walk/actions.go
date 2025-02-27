@@ -7,6 +7,5 @@ import (
 	"path/filepath"
 )
 
-func filterOut(path, ext string, minSize int64, info os.FileInfo){
 
 }
