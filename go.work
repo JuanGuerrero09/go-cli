@@ -3,5 +3,6 @@ go 1.20
 use (
 	./01-cli/wordcounter
 	./02-cli/todo
+	./03-cli/mdp
 	./04-cli/walk
 )
