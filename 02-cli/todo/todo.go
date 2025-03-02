@@ -85,7 +85,7 @@ func (l *List) String() string {
 			prefix = "[X] "
 		}
 		// Adjust the item number k to print numbers starting from 1 instead of 0
-		formatted += fmt.Sprintf("%d.%s: %s\n", k+1, prefix , t.Task)
+		formatted += fmt.Sprintf("%d.%s: %s\n", k+1, prefix, t.Task)
 	}
 	return formatted
 }
@@ -98,7 +98,7 @@ func (l *List) StringTime() string {
 			prefix = "[X] "
 		}
 		// Adjust the item number k to print numbers starting from 1 instead of 0
-		formatted += fmt.Sprintf("%s, %d.%s: %s\n", t.CreatedAt.Format("02-01-2006 15:04:05"), k+1, prefix , t.Task)
+		formatted += fmt.Sprintf("%s, %d.%s: %s\n", t.CreatedAt.Format("02-01-2006 15:04:05"), k+1, prefix, t.Task)
 	}
 	return formatted
 }
@@ -111,7 +111,7 @@ func (l *List) Pending() string {
 			continue
 		}
 		// Adjust the item number k to print numbers starting from 1 instead of 0
-		formatted += fmt.Sprintf("%s, %d.%s: %s\n", t.CreatedAt.Format("02-01-2006 15:04:05"), k+1, prefix , t.Task)
+		formatted += fmt.Sprintf("%s, %d.%s: %s\n", t.CreatedAt.Format("02-01-2006 15:04:05"), k+1, prefix, t.Task)
 	}
 	return formatted
 }
