@@ -2,8 +2,11 @@ package todo
 
 import (
 	"encoding/json"
+	"path/filepath"
+	// "path/filepath"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"time"
 )
@@ -58,7 +61,35 @@ func (l *List) Save(filename string) error {
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(filename, js, 0644)
+  exePath, err := os.Executable()
+	if err != nil {
+		log.Fatal(err)
+	}
+  basepath := filepath.Dir(exePath)
+  if err != nil {
+    log.Println(err)
+  }
+
+  dataDir := filepath.Join(basepath, "data")
+  if _, err := os.Stat(dataDir); os.IsNotExist(err){
+    err := os.Mkdir(dataDir, os.ModePerm) 
+      if err != nil{
+      log.Println("Error creando el directorio 'data':", err)
+			return err
+    }
+  }
+  // Guardar el archivo dentro de "data/"
+	filePath := filepath.Join(dataDir, filename)
+
+	// Escribir el archivo JSON
+	err = os.WriteFile(filePath, js, 0644)
+	if err != nil {
+		log.Println("Error escribiendo el archivo JSON:", err)
+		return err
+	}
+
+	fmt.Println("Archivo guardado en:", filePath)
+	return nil
 }
 
 // Get method opens the provided file name, decodes
